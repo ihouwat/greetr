@@ -1,7 +1,6 @@
-(function (global, $) {
+;(function (global, $) {
 
   // This construction approach mimics jQuery's architecture
-
   var Greetr = function(firstName, lastName, language) {
     return new Greetr.init(firstName, lastName, language);
   }
@@ -101,7 +100,7 @@
       return this;
     },
 
-    
+    // Using jQuery to set greeting on webpage
     HTMLGreeting: function(selector, formal) {
       // Checking for jQuery
       if (!$) {
