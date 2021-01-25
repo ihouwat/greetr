@@ -30,24 +30,29 @@
   // Greetr object methods
   Greetr.prototype = {
 
+    // Return full name
     fullName: function() {
       return this.firstName + ' ' + this.lastName;
     },
 
+    // Validate language
     validate: function() {
       if(supportedLangs.indexOf(this.language) === -1) {
         throw "Invalid language";
       };
     },
 
+    // Returns informal greeting
     greeting: function() {
       return greetings[this.language] + ' ' + this.firstName + '!';
     },
 
+    // Returns formal greeting
     formalGreeting: function() {
       return formalGreetings[this.language] + ', ' + this.fullName() + '.';
     },
 
+    // greet method which will be used in the app
     greet: function(formal) {
       var msg; 
 
@@ -68,6 +73,7 @@
       return this;
     },
 
+    // for console logging
     log: function() {
       if(console) {
         console.log(logMessages[this.language] + ': ' + this.fullName());
@@ -83,6 +89,31 @@
 
       return this;
     },
+
+    HTMLGreeting: function(selector, formal) {
+      // Checking for jQuery
+      if (!$) {
+        throw 'jQuery not loaded';
+      }
+
+      if (!selector) {
+        throw 'Missing jQuery selector';
+      }
+
+      var msg;
+
+      if (formal) {
+        msg = this.formalGreeting();
+      } else {
+        msg.this.greeting();
+      }
+
+      // use jQuery
+      $(selector).html(msg);
+
+      // make method chainable
+      return this;
+    }
 
   };
 
