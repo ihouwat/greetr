@@ -1,13 +1,91 @@
 (function (global, $) {
 
-  // This approach mimics jQuery's architecture
+  // This construction approach mimics jQuery's architecture
 
   var Greetr = function(firstName, lastName, language) {
     return new Greetr.init(firstName, lastName, language);
   }
 
+
+  // These variables not exposed to the global object
+  // closure allows Greetr.init to have access to this memory space
+  var supportedLangs = ['en', 'es'];
+
+  var greetings = {
+      en: 'Hello',
+      es: 'Hola'
+  };
+
+  var formalGreetings = {
+    en: 'Greetings',
+    es: 'Saludos'
+  };
+
+  var logMessages = {
+    en: 'Logged in',
+    es: 'Inicio sesion'
+  };
+
+
   // Greetr object methods
-  Greetr.prototype = {};
+  Greetr.prototype = {
+
+    fullName: function() {
+      return this.firstName + ' ' + this.lastName;
+    },
+
+    validate: function() {
+      if(supportedLangs.indexOf(this.language) === -1) {
+        throw "Invalid language";
+      };
+    },
+
+    greeting: function() {
+      return greetings[this.language] + ' ' + this.firstName + '!';
+    },
+
+    formalGreeting: function() {
+      return formalGreetings[this.language] + ', ' + this.fullName() + '.';
+    },
+
+    greet: function(formal) {
+      var msg; 
+
+      // if undefined or null it will be coerced to 'false'
+      if (formal) {
+        msg = this.formalGreeting();
+      }
+      else {
+        msg = this.greeting();
+      }
+
+      if (console) {
+        console.log(msg);
+      }
+
+      // 'this' refers to the calling object at execution time
+      // makes the method chainable
+      return this;
+    },
+
+    log: function() {
+      if(console) {
+        console.log(logMessages[this.language] + ': ' + this.fullName());
+      }
+
+      return this;
+    },
+
+    setLang: function(lang) {
+      this.language = lang;
+
+      this.validate();
+
+      return this;
+    },
+
+  };
+
 
   // Function constructor to build a new object
   // Includes default values if you don't pass all arguments
@@ -21,6 +99,7 @@
   }
 
   Greetr.init.prototype = Greetr.prototype;
+
 
   // Exposing Greetr function to the global object
   global.Greetr = global.G$ = Greetr;
